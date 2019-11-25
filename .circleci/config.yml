@@ -2,11 +2,6 @@ version: 2
 jobs:
   build:
     docker:
-      - run:
-          command: govind
-            dotnet --list-sdks
-            dotnet --list-runtimes
-
       - image: 'mcr.microsoft.com/dotnet/core/sdk:3.0'
         environment:
           DEBIAN_FRONTEND: "noninteractive"
@@ -15,6 +10,8 @@ jobs:
       - run:
           name: Test and build
           command: |
+            dotnet --list-sdks
+            dotnet --list-runtimes
             bash ./scripts/build.sh $CIRCLE_SHA1
 
       - store_artifacts:
