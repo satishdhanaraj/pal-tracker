@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: 'mcr.microsoft.com/dotnet/core/sdk:3.0'
+      - image: 'microsoft/dotnet:3.0-sdk'
         environment:
           DEBIAN_FRONTEND: "noninteractive"
     steps:
@@ -10,8 +10,6 @@ jobs:
       - run:
           name: Test and build
           command: |
-            dotnet --list-sdks
-            dotnet --list-runtimes
             bash ./scripts/build.sh $CIRCLE_SHA1
 
       - store_artifacts:
