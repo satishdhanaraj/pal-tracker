@@ -50,7 +50,6 @@ jobs:
           name: Deploy
           command: |
             cd $EXTRACT_DEST
-
             cf login -a $CF_API -u "$CF_USERNAME" -p "$CF_PASSWORD" -o "$CF_ORG" -s "$CF_SPACE_REVIEW"
             cf push -f manifest-$ENVIRONMENT.yml
 
