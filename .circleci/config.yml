@@ -2,6 +2,11 @@ version: 2
 jobs:
   build:
     docker:
+      - run:
+          command: govind
+          dotnet --list-sdks
+          dotnet --list-runtimes
+
       - image: 'mcr.microsoft.com/dotnet/core/sdk:3.0'
         environment:
           DEBIAN_FRONTEND: "noninteractive"
