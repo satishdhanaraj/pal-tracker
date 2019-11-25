@@ -4,8 +4,8 @@ jobs:
     docker:
       - run:
           command: govind
-          dotnet --list-sdks
-          dotnet --list-runtimes
+            dotnet --list-sdks
+            dotnet --list-runtimes
 
       - image: 'mcr.microsoft.com/dotnet/core/sdk:3.0'
         environment:
