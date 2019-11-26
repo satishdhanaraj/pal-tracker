@@ -79,7 +79,7 @@ namespace PalTrackerTests
         [Fact]
         public void Update()
         {
-            var id = CreateTimeEntry(new TimeEntry(222, 333,  new DateTime(2008, 01, 08), 24));
+            var id = CreateTimeEntry(new TimeEntry(222, 333,  new DateTime(2008, 01, 08), 24)); 
             var updated = new TimeEntry(999, 888,  new DateTime(2012, 08, 12), 2);
 
             var putResponse = _testClient.PutAsync($"/time-entries/{id}", SerializePayload(updated)).Result;

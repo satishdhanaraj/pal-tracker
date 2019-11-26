@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PalTracker;
 
 namespace PalTracker
 {
@@ -31,6 +32,8 @@ namespace PalTracker
             services.AddSingleton(sp => new WelcomeMessage(
             Configuration.GetValue<string>("WELCOME_MESSAGE", "WELCOME_MESSAGE not configured.")
           ));
+            
+            services.AddSingleton<ITimeEntryRepository, InMemoryTimeEntryRepository>();
 
             services.AddSingleton(sp => new CloudFoundryInfo(
             Configuration.GetValue<string>("PORT", "Port not configured."), 
