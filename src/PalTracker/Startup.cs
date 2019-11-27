@@ -12,6 +12,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PalTracker;
 using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
+using Steeltoe.Management.CloudFoundry;
+using Steeltoe.Management.Endpoint.CloudFoundry;
+using Steeltoe.Common.HealthChecks;
+using Steeltoe.Management.Endpoint.Info;
 
 namespace PalTracker
 {
@@ -27,18 +31,20 @@ namespace PalTracker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IInfoContributor, TimeEntryInfoContributor>();
+            services.AddSingleton<IOperationCounter<TimeEntry>, OperationCounter<TimeEntry>>();
             services.AddDbContext<TimeEntryContext>(options => options.UseMySql(Configuration));
 
             // Add framework services.
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            services.AddScoped<IHealthContributor, TimeEntryHealthContributor>();
             services.AddSingleton(sp => new WelcomeMessage(
             Configuration.GetValue<string>("WELCOME_MESSAGE", "WELCOME_MESSAGE not configured.")
           ));
             
             //services.AddSingleton<ITimeEntryRepository, InMemoryTimeEntryRepository>();
             services.AddScoped<ITimeEntryRepository, MySqlTimeEntryRepository>();
-
+            services.AddCloudFoundryActuators(Configuration);
             services.AddSingleton(sp => new CloudFoundryInfo(
             Configuration.GetValue<string>("PORT", "Port not configured."), 
             Configuration.GetValue<string>("MEMORY_LIMIT", "MemoryLimit not configured."),
@@ -62,6 +68,7 @@ namespace PalTracker
 
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseCloudFoundryActuators();
         }
     }
 }
